@@ -1,51 +1,41 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button} from 'react-native'
+import { StyleSheet, View, Button, Text, ActivityIndicator } from 'react-native'
+import QcmRepItem from './QcmRepItem'
+import { getQCMue, getQCMueRep } from '../API/QCMue'
 
-class QcmItem extends React.Component {
+class QcmRep extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { qcm: [], isLoading: false }
+  }
+
+  _displayQcm(){
+  	this.setState({ isLoading: true }) // Lancement du chargement
+  	getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
+    this.props.navigation.navigate("Qcm", { qcm: this.state.qcm })
+  }
+
+  _displayLoading() {
+      if (this.state.isLoading) {
+        // Si isLoading vaut true, on affiche le chargement à l'écran
+        return (
+          <View style={styles.loading_container}>
+            <ActivityIndicator size='large' />
+          </View>
+        )
+      }
+    }
 
   render() {
-      const qcm = this.props.qcm
-      tab = [qcm.ba, qcm.bb, qcm.bc, qcm.bd, qcm.be]
-      for (var i = 0 ; i < tab.length; i++) {
-          tab[i] = tab[i] == "1" ? "VRAI" : "FAUX"
-      }
+      const qcm  = this.props.navigation.state.params.qcm
       return (
-        <View>
-          <View style={styles.main_container}>
-            <View style={styles.intitule}>
-              <Text style={styles.intitule_text}>{qcm.intitule}</Text>
-            </View>
-            <View style={styles.propositions}>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>A. {qcm.pa}</Text>
-                <Text style={styles.proposition_VF}>{tab[0]}</Text>
-                <Text style={styles.proposition_text}>{qcm.ca}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>B. {qcm.pb}</Text>
-                <Text style={styles.proposition_VF}>{tab[1]}</Text>
-                <Text style={styles.proposition_text}>{qcm.ca}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>C. {qcm.pc}</Text>
-                <Text style={styles.proposition_VF}>{tab[2]}</Text>
-                <Text style={styles.proposition_text}>{qcm.ca}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>D. {qcm.pd}</Text>
-                <Text style={styles.proposition_VF}>{tab[3]}</Text>
-                <Text style={styles.proposition_text}>{qcm.ca}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>E. {qcm.pe}</Text>
-                <Text style={styles.proposition_VF}>{tab[4]}</Text>
-                <Text style={styles.proposition_text}>{qcm.ca}</Text>
-              </View>
-            </View>
-          </View>
-          <View>
-              <Button style={{ height: 50 }} title='Suivant' onPress={() => this._loadQcm()}/>
-          </View>
+        <View style={styles.main_container}>
+	        {this._displayLoading()}
+        	<QcmRepItem qcm={qcm}/>
+          <Button buttonStyle={{ height: 70 }} titleStyle={{ fontSize: 25 }}
+            title='Suivant' onPress={() => this._displayQcm()}
+          />
         </View>
       )
   }
@@ -53,27 +43,17 @@ class QcmItem extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-    margin: 10,
-    paddingTop: 25,
   },
-  intitule: {
+  loading_container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     alignItems: 'center',
-  },
-  intitule_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-  propositions: {
-    flex: 1,
-    alignContent: 'center',
-  },
-  proposition: {
-    margin: 5,
-  },
-  proposition_text: {
-    fontSize: 20,
+    justifyContent: 'center'
   },
 
 })
 
-export default QcmItem
+export default QcmRep
