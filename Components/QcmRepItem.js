@@ -11,6 +11,10 @@ class QcmRepItem extends React.Component {
   render() {
       const qcm = this.props.qcm
       const ba = qcm.ba == "1" ? "VRAI" : qcm.ba == "0" ? "FAUX" : null
+      const bb = qcm.bb == "1" ? "VRAI" : qcm.bb == "0" ? "FAUX" : null
+      const bc = qcm.bc == "1" ? "VRAI" : qcm.bc == "0" ? "FAUX" : null
+      const bd = qcm.bd == "1" ? "VRAI" : qcm.bd == "0" ? "FAUX" : null
+      const be = qcm.be == "1" ? "VRAI" : qcm.be == "0" ? "FAUX" : null
       return (
           <View style={styles.main_container}>
 
@@ -21,28 +25,28 @@ class QcmRepItem extends React.Component {
             <View style={styles.propositions}>
               <View style={styles.proposition}>
                 <Text style={styles.proposition_text}>A. {qcm.pa}</Text>
-                <View style={styles.proposition_VF}><Text>{ba}</Text></View>
-                <Text style={styles.proposition_text}>{qcm.ca}</Text>
+                <Text style={styles.VF_text}>{ba}</Text>
+                <Text style={styles.corrige_text}>{qcm.ca}</Text>
               </View>
               <View style={styles.proposition}>
                 <Text style={styles.proposition_text}>B. {qcm.pb}</Text>
-                <View style={styles.proposition_VF}><Text>{qcm.bb}</Text></View>
-                <Text style={styles.proposition_text}>{qcm.cb}</Text>
+                <Text style={styles.VF_text}>{bb}</Text>
+                <Text style={styles.corrige_text}>{qcm.cb}</Text>
               </View>
               <View style={styles.proposition}>
                 <Text style={styles.proposition_text}>C. {qcm.pc}</Text>
-                <View style={styles.proposition_VF}><Text>{qcm.bc}</Text></View>
-                <Text style={styles.proposition_text}>{qcm.cc}</Text>
+                <Text style={styles.VF_text}>{bc}</Text>
+                <Text style={styles.corrige_text}>{qcm.cc}</Text>
               </View>
               <View style={styles.proposition}>
                 <Text style={styles.proposition_text}>D. {qcm.pd}</Text>
-                <View style={styles.proposition_VF}><Text>{qcm.bd}</Text></View>
-                <Text style={styles.proposition_text}>{qcm.cd}</Text>
+                <Text style={styles.VF_text}>{bd}</Text>
+                <Text style={styles.corrige_text}>{qcm.cd}</Text>
               </View>
               <View style={styles.proposition}>
                 <Text style={styles.proposition_text}>E. {qcm.pe}</Text>
-                <View style={styles.proposition_VF}><Text>{qcm.be}</Text></View>
-                <Text style={styles.proposition_text}>{qcm.ce}</Text>
+                <Text style={styles.VF_text}>{be}</Text>
+                <Text style={styles.corrige_text}>{qcm.ce}</Text>
               </View>
             </View>
 
@@ -82,8 +86,14 @@ const styles = StyleSheet.create({
   proposition_text: {
     fontSize: 20,
   },
-  proposition_VF: {
-    alignItems: 'center',
+  corrige_text:{
+    fontSize: 20,
+    color: 'red',
+  },
+  VF_text: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
   }
 })
 

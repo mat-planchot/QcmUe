@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Button, Text, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Button, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
 import QcmItem from './QcmItem'
 import { getQCMue, getQCMueRep } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
 
@@ -37,9 +37,14 @@ class Qcm extends React.Component {
         <View style={styles.main_container}>
 	        {this._displayLoading()}
         	<QcmItem qcm={this.state.qcm}/>
-          <Button buttonStyle={{ height: 70 }} titleStyle={{ fontSize: 25 }}
-            title='Afficher la réponse' onPress={() => this._displayQcmRep()}
-          />
+          <View style={styles.button_container}>
+            <TouchableOpacity style={styles.touchableButtonGreen} onPress={() => this._loadQcm()}>
+                <Text style={styles.button_text}>Suivant</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchableButtonBlue} onPress={() => this._displayQcmRep()}>
+                <Text style={styles.button_text}>Afficher la réponse</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )
   }
@@ -57,6 +62,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  button_container: {
+    flexDirection: 'row',
+  },
+  button_text: {
+    color: "white",
+    fontSize: 22,
+    textAlign: "center",
+  },
+  touchableButtonGreen:{
+    height: 70,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "green",
+  },
+  touchableButtonBlue:{
+    height: 70,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "blue",
+  }
 
 })
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Button, Text, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Button, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
 import QcmRepItem from './QcmRepItem'
 import { getQCMue, getQCMueRep } from '../API/QCMue'
 
@@ -8,12 +8,11 @@ class QcmRep extends React.Component {
   constructor(props) {
     super(props)
     this.state = { qcm: [], isLoading: false }
+    getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
   }
 
   _displayQcm(){
-  	this.setState({ isLoading: true }) // Lancement du chargement
-  	getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
-    this.props.navigation.navigate("Qcm", { qcm: this.state.qcm })
+      this.props.navigation.navigate("Qcm", { qcm: this.state.qcm })
   }
 
   _displayLoading() {
@@ -33,9 +32,11 @@ class QcmRep extends React.Component {
         <View style={styles.main_container}>
 	        {this._displayLoading()}
         	<QcmRepItem qcm={qcm}/>
-          <Button buttonStyle={{ height: 70 }} titleStyle={{ fontSize: 25 }}
-            title='Suivant' onPress={() => this._displayQcm()}
-          />
+          <View style={styles.button_container}>
+            <TouchableOpacity style={styles.touchableButtonBlue} onPress={() => this._displayQcm()}>
+                <Text style={styles.button_text}>Retour</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )
   }
@@ -53,7 +54,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-
+  button_container: {
+    flexDirection: 'row',
+  },
+  touchableButtonBlue:{
+    height: 70,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "blue",
+  },
+  button_text: {
+    color: "white",
+    fontSize: 22,
+    textAlign: "center",
+  },
 })
 
 export default QcmRep
