@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Button, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
 import QcmItem from './QcmItem'
 import { getQCMue, getQCMueRep } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
 
@@ -20,23 +20,23 @@ class Qcm extends React.Component {
           </View>
         )
       }
-    }
-
+  }
   _loadQcm(){
   	this.setState({ isLoading: true })
-    getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
+    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, isChecked: false  }));
   }
   _displayQcmRep() {
   	this.setState({ isLoading: true })
-    getQCMueRep(this.state.qcm.idUe).then(data => this.setState({ qcm: data, isLoading: false }) );
+    getQCMueRep(this.state.qcm.idUe).then(data => this.setState({ qcm: data, isLoading: false, isChecked: false }) );
     this.props.navigation.navigate("QcmRep", { qcm: this.state.qcm })
   }
 
   render() {
+      let { qcmData, checked } = this.state;
       return (
         <View style={styles.main_container}>
 	        {this._displayLoading()}
-        	<QcmItem qcm={this.state.qcm}/>
+        	<QcmItem qcm={this.state.qcm} />
           <View style={styles.button_container}>
             <TouchableOpacity style={styles.touchableButtonGreen} onPress={() => this._loadQcm()}>
                 <Text style={styles.button_text}>Suivant</Text>

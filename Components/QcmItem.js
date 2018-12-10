@@ -1,33 +1,36 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button} from 'react-native'
+import { StyleSheet, View, Text, ScrollView, Checkbox} from 'react-native'
+import CheckboxFormX from 'react-native-checkbox-form';
 
 class QcmItem extends React.Component {
+  _onSelect = ( item ) => {
+        console.log(item);
+      };
 
   render() {
       const qcm = this.props.qcm
+      const qcmData = [
+        {label: qcm.pa, value: qcm.ba},
+        {label: qcm.pb, value: qcm.bb},
+        {label: qcm.pc, value: qcm.bc},
+        {label: qcm.pd, value: qcm.bd},
+        {label: qcm.pe, value: qcm.be},
+      ];
       return (
-        <View style={styles.main_container}>
+        <ScrollView style={styles.main_container}>
           <View style={styles.intitule}>
             <Text style={styles.intitule_text}>{qcm.intitule}</Text>
           </View>
           <View style={styles.propositions}>
-            <View style={styles.proposition}>
-              <Text style={styles.proposition_text}>A. {qcm.pa}</Text>
-            </View>
-            <View style={styles.proposition}>
-              <Text style={styles.proposition_text}>B. {qcm.pb}</Text>
-            </View>
-            <View style={styles.proposition}>
-              <Text style={styles.proposition_text}>C. {qcm.pc}</Text>
-            </View>
-            <View style={styles.proposition}>
-              <Text style={styles.proposition_text}>D. {qcm.pd}</Text>
-            </View>
-            <View style={styles.proposition}>
-              <Text style={styles.proposition_text}>E. {qcm.pe}</Text>
-            </View>
+            <CheckboxFormX
+                  textStyle={{ fontSize: 20, marginRight: 30 }}
+                  dataSource={qcmData}
+                  itemShowKey="label"
+                  itemCheckedKey="RNchecked"
+                  onChecked={(item) => this._onSelect(item)}
+              />
           </View>
-        </View>
+        </ScrollView>
       )
   }
 }
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   },
   main_container: {
     flex: 1,
-    margin: 10,
+    padding: 10,
   },
   intitule: {
     alignItems: 'center',
@@ -47,10 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   propositions: {
-    alignContent: 'center',
-  },
-  proposition: {
-    margin: 5,
+    marginVertical: 10,
   },
   proposition_text: {
     fontSize: 20,

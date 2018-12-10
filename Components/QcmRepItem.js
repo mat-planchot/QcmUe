@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text} from 'react-native'
+import { StyleSheet, View, Text, ScrollView} from 'react-native'
 
 class QcmRepItem extends React.Component {
 
@@ -16,7 +16,7 @@ class QcmRepItem extends React.Component {
       const bd = qcm.bd == "1" ? "VRAI" : qcm.bd == "0" ? "FAUX" : null
       const be = qcm.be == "1" ? "VRAI" : qcm.be == "0" ? "FAUX" : null
       return (
-          <View style={styles.main_container}>
+          <ScrollView style={styles.main_container}>
 
             <View style={styles.intitule}>
               <Text style={styles.intitule_text}>{qcm.intitule}</Text>
@@ -50,7 +50,7 @@ class QcmRepItem extends React.Component {
               </View>
             </View>
 
-          </View>
+          </ScrollView>
 
       )
   }
