@@ -5,7 +5,7 @@ class QcmRepItem extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { qcm: [], isLoading: false }
+    this.state = { qcm: [], isLoading: false, qcmData: [], good: false, score: 0, nbQcm: 0 }
   }
 
   render() {
