@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
 import CheckboxFormX from 'react-native-checkbox-form';
+import QcmRepItem from './QcmRepItem'
 import { getQCMue, getQCMueRep } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
 
 class Qcm extends React.Component {
@@ -8,7 +9,7 @@ class Qcm extends React.Component {
   constructor(props) {
     super(props)
     this.compteRep = 0
-    this.state = { qcm: [], isLoading: false, qcmData: [], good: false, score: 0, nbQcm: 0  }
+    this.state = { qcm: [], isLoading: false,qcmRep: false, qcmData: [], good: false, score: 0, nbQcm: 0  }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
   }
 
@@ -23,7 +24,7 @@ class Qcm extends React.Component {
       if(q.RNchecked == q.value){
         this.setState({ good: true })
         this.compteRep++
-      } else { console.log("pas de réponse") }
+      }
       if(this.state.good) { console.log("proposition juste") }
       else { console.log("proposition mauvaise") }
     }
@@ -45,13 +46,26 @@ class Qcm extends React.Component {
       }
   }
   _loadQcm(){
-  	this.setState({ isLoading: true })
+  	this.setState({ isLoading: true, qcmRep: false })
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
   }
   _displayQcmRep() {
-  	this.setState({ isLoading: true })
-    getQCMueRep(this.state.qcm.idUe).then(data => this.setState({ qcm: data, isLoading: false, }) );
-    this.props.navigation.navigate("QcmRep", { qcm: this.state.qcm })
+  	//this.setState({ isLoading: true })
+    //this.Reponses()
+    //getQCMueRep(this.state.qcm.idUe).then(data => this.setState({ qcm: data, isLoading: false, }) );
+    //this.props.navigation.navigate("QcmRep", { qcm: this.state.qcm })
+    this.setState({ qcmRep: true })
+    return (
+      <View style={styles.main_container}>
+        <QcmRepItem qcm={this.state.qcm}/>
+        <View style={styles.button_container}>
+          <TouchableOpacity style={styles.touchableButtonGreen} onPress={() => this._loadQcm()}>
+              <Text style={styles.button_text}>Suivant</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+    this.forceUpdate()
   }
 
   render() {
@@ -63,6 +77,7 @@ class Qcm extends React.Component {
       {RNchecked: false, label: qcm.pd, value: qcm.bd == "1" ? true : false },
       {RNchecked: false, label: qcm.pe, value: qcm.be == "1" ? true : false },
     ];
+    if(this.state.qcmRep == false){
     return (
       <View style={styles.main_container}>
         {this._displayLoading()}
@@ -90,6 +105,7 @@ class Qcm extends React.Component {
         </View>
       </View>
     )
+    } else {this._displayQcmRep()}
   }
 }
 const styles = StyleSheet.create({
