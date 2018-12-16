@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
 import CheckboxFormX from 'react-native-checkbox-form';
+import QcmItem from './QcmItem'
 import QcmRepItem from './QcmRepItem'
 import { getQCMue, getQCMueRep } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
 
@@ -9,14 +10,19 @@ class Qcm extends React.Component {
   constructor(props) {
     super(props)
     this.compteRep = 0
-    this.state = { qcm: [], isLoading: false,qcmRep: false, qcmData: [], good: false, score: 0, nbQcm: 0  }
+    this.state = { qcm: [], isLoading: false, qcmRep: false, good: false, score: 0, nbQcm: 0  }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
   }
 
-  _onSelect = ( item ) => {
-    console.log(item)
-  };
-
+  _loadQcm(){
+    this.setState({ isLoading: true, qcmRep: false })
+    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
+    console.log(this.state.qcmRep);
+  }
+  _displayQcmRep() {
+    this.setState({ qcmRep: true })
+    console.log(this.state.qcmRep);
+  }
   _Reponses(){
     this.setState({ nbQcm: this.state.nbQcm +1 })
     for (let q of qcmData) {
@@ -34,67 +40,17 @@ class Qcm extends React.Component {
     }
     this.setState({ compteRep: 0 })
   }
-
-  _displayLoading() {
-      if (this.state.isLoading) {
-        // Si isLoading vaut true, on affiche le chargement à l'écran
-        return (
-          <View style={styles.loading_container}>
-            <ActivityIndicator size='large' />
-          </View>
-        )
-      }
-  }
-  _loadQcm(){
-  	this.setState({ isLoading: true, qcmRep: false })
-    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
-  }
-  _displayQcmRep() {
-  	//this.setState({ isLoading: true })
-    //this.Reponses()
-    //getQCMueRep(this.state.qcm.idUe).then(data => this.setState({ qcm: data, isLoading: false, }) );
-    //this.props.navigation.navigate("QcmRep", { qcm: this.state.qcm })
-    this.setState({ qcmRep: true })
-    return (
-      <View style={styles.main_container}>
-        <QcmRepItem qcm={this.state.qcm}/>
+  button(){
+    if(this.state.qcmRep){
+      return(
         <View style={styles.button_container}>
           <TouchableOpacity style={styles.touchableButtonGreen} onPress={() => this._loadQcm()}>
               <Text style={styles.button_text}>Suivant</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    )
-    this.forceUpdate()
-  }
-
-  render() {
-    const qcm = this.state.qcm
-    const qcmData = [
-      {RNchecked: false, label: qcm.pa, value: qcm.ba == "1" ? true : false },
-      {RNchecked: false, label: qcm.pb, value: qcm.bb == "1" ? true : false },
-      {RNchecked: false, label: qcm.pc, value: qcm.bc == "1" ? true : false },
-      {RNchecked: false, label: qcm.pd, value: qcm.bd == "1" ? true : false },
-      {RNchecked: false, label: qcm.pe, value: qcm.be == "1" ? true : false },
-    ];
-    if(this.state.qcmRep == false){
-    return (
-      <View style={styles.main_container}>
-        {this._displayLoading()}
-        <ScrollView style={styles.scroll_container}>
-          <View style={styles.intitule}>
-            <Text style={styles.intitule_text}>{qcm.intitule}</Text>
-          </View>
-          <View style={styles.propositions}>
-            <CheckboxFormX
-                  textStyle={{ fontSize: 20, marginRight: 30 }}
-                  dataSource={qcmData}
-                  itemShowKey="label"
-                  itemCheckedKey="RNchecked"
-                  onChecked={(item) => this._onSelect(item)}
-              />
-          </View>
-        </ScrollView>
+      )
+    } else {
+      return(
         <View style={styles.button_container}>
           <TouchableOpacity style={styles.touchableButtonGreen} onPress={() => this._loadQcm()}>
               <Text style={styles.button_text}>Suivant</Text>
@@ -103,9 +59,30 @@ class Qcm extends React.Component {
               <Text style={styles.button_text}>Afficher la réponse</Text>
           </TouchableOpacity>
         </View>
+      )
+    }
+  }
+  render() {
+    const qcm = this.state.qcm
+    let qcmVue
+    const qcmData = [
+      {RNchecked: false, label: qcm.pa, value: qcm.ba == "1" ? true : false },
+      {RNchecked: false, label: qcm.pb, value: qcm.bb == "1" ? true : false },
+      {RNchecked: false, label: qcm.pc, value: qcm.bc == "1" ? true : false },
+      {RNchecked: false, label: qcm.pd, value: qcm.bd == "1" ? true : false },
+      {RNchecked: false, label: qcm.pe, value: qcm.be == "1" ? true : false },
+    ];
+    if(this.state.qcmRep){
+      qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
+    } else {
+      qcmVue = <QcmItem qcm={qcm} qcmData={qcmData} />
+    }
+    return (
+      <View style={styles.main_container}>
+      {qcmVue}
+      {this.button()}
       </View>
     )
-    } else {this._displayQcmRep()}
   }
 }
 const styles = StyleSheet.create({

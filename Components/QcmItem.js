@@ -1,44 +1,43 @@
 import React from 'react'
-import { StyleSheet, View, Text, ScrollView} from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
 import CheckboxFormX from 'react-native-checkbox-form';
+import { getQCMue, getQCMueRep } from '../API/QCMue'
 
 class QcmItem extends React.Component {
   constructor(props) {
     super(props)
     this.compteRep = 0
-    this.state = { qcmData: [], good: false, score: 0, nbQcm: 0  }
+    this.state = { qcm: [], isLoading: false, qcmRep: false, good: false, score: 0, nbQcm: 0  }
+    getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
   }
   _onSelect = ( item ) => {
-        console.log(item)
+    console.log(item)
   };
-
-  _Reponses(){
-    this.setState({ nbQcm: this.state.nbQcm +1 })
-    for (let q of this.state.qcmData) {
-      this.setState({ good: false })
-      if(q.RNchecked == q.value){
-        this.setState({ good: true })
-        this.compteRep++
-      } else { console.log("pas de réponse") }
-      if(this.state.good) { console.log("bien") }
-      else { console.log("mauvais") }
-    }
-    if(this.compteRep == 5){
-      this.setState({ score: this.state.score +1, compteRep: 0 })
-    }
+  _displayLoading() {
+      if (this.state.isLoading) {
+        // Si isLoading vaut true, on affiche le chargement à l'écran
+        return (
+          <View style={styles.loading_container}>
+            <ActivityIndicator size='large' />
+          </View>
+        )
+      }
   }
-
+  _loadQcm(){
+  	this.setState({ isLoading: true, qcmRep: false })
+    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
+    console.log(this.state.qcmRep);
+  }
+  _displayQcmRep() {
+    this.setState({ qcmRep: true })
+    console.log(this.state.qcmRep);
+  }
   render() {
       const qcm = this.props.qcm
-      const qcmData = [
-        {label: qcm.pa, value: qcm.ba == "1" ? true : false },
-        {label: qcm.pb, value: qcm.bb == "1" ? true : false },
-        {label: qcm.pc, value: qcm.bc == "1" ? true : false },
-        {label: qcm.pd, value: qcm.bd == "1" ? true : false },
-        {label: qcm.pe, value: qcm.be == "1" ? true : false },
-      ];
+      const qcmData = this.props.qcmData
       return (
-        <ScrollView style={styles.main_container}>
+        <ScrollView style={styles.scroll_container}>
+        {this._displayLoading()}
           <View style={styles.intitule}>
             <Text style={styles.intitule_text}>{qcm.intitule}</Text>
           </View>
@@ -61,8 +60,39 @@ const styles = StyleSheet.create({
   },
   main_container: {
     flex: 1,
-    padding: 10,
   },
+  loading_container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  button_container: {
+    flexDirection: 'row',
+  },
+  button_text: {
+    color: "white",
+    fontSize: 22,
+    textAlign: "center",
+  },
+  touchableButtonGreen:{
+    height: 70,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "green",
+  },
+  touchableButtonBlue:{
+    height: 70,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "blue",
+  },
+
   intitule: {
     alignItems: 'center',
   },
@@ -73,8 +103,8 @@ const styles = StyleSheet.create({
   propositions: {
     marginVertical: 10,
   },
-  proposition_text: {
-    fontSize: 20,
+  scroll_container: {
+    padding: 10,
   },
 
 })
