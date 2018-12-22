@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
 import CheckboxFormX from 'react-native-checkbox-form';
 import QcmItem from './QcmItem'
 import QcmRepItem from './QcmRepItem'
@@ -71,7 +71,7 @@ class Qcm extends React.Component {
       {RNchecked: false, label: qcm.pc, value: qcm.bc == "1" ? true : false },
       {RNchecked: false, label: qcm.pd, value: qcm.bd == "1" ? true : false },
       {RNchecked: false, label: qcm.pe, value: qcm.be == "1" ? true : false },
-    ];
+    ]; 
     if(this.state.qcmRep){
       qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
     } else {
@@ -120,19 +120,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "blue",
   },
-
-  intitule: {
-    alignItems: 'center',
-  },
-  intitule_text: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-  propositions: {
-    marginVertical: 10,
-  },
-  scroll_container: {
-    padding: 10,
   },
 })
 

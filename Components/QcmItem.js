@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator, ScrollView } from 'react-native'
 import CheckboxFormX from 'react-native-checkbox-form';
 import { getQCMue, getQCMueRep } from '../API/QCMue'
 
@@ -55,12 +55,6 @@ class QcmItem extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-  },
-  main_container: {
-    flex: 1,
-  },
   loading_container: {
     position: 'absolute',
     left: 0,
@@ -70,29 +64,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  button_container: {
-    flexDirection: 'row',
-  },
-  button_text: {
-    color: "white",
-    fontSize: 22,
-    textAlign: "center",
-  },
-  touchableButtonGreen:{
-    height: 70,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "green",
-  },
-  touchableButtonBlue:{
-    height: 70,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "blue",
-  },
-
   intitule: {
     alignItems: 'center',
   },

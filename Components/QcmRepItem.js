@@ -66,10 +66,6 @@ class QcmRepItem extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  main_container: {
-    flex: 1,
-    margin: 10,
-  },
   loading_container: {
     position: 'absolute',
     left: 0,
