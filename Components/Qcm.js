@@ -10,6 +10,7 @@ class Qcm extends React.Component {
   constructor(props) {
     super(props)
     this.compteRep = 0
+    this.good = false
     this.state = { qcm: [], isLoading: false, qcmRep: false, good: false, score: 0, nbQcm: 0  }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
   }
@@ -17,30 +18,30 @@ class Qcm extends React.Component {
   _loadQcm(){
     this.setState({ isLoading: true, qcmRep: false })
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
-    console.log(this.state.qcmRep);
   }
-  _displayQcmRep() {
+  _displayQcmRep(qcmData) {
     this.setState({ qcmRep: true })
-    console.log(this.state.qcmRep);
+    this._Reponses(qcmData)
   }
-  _Reponses(){
+  _Reponses(qcmData){
     this.setState({ nbQcm: this.state.nbQcm +1 })
     for (let q of qcmData) {
-      this.setState({ good: false })
+      this.good = false
       if(q.RNchecked == q.value){
-        this.setState({ good: true })
+        this.good = true
         this.compteRep++
       }
-      if(this.state.good) { console.log("proposition juste") }
-      else { console.log("proposition mauvaise") }
+      if(this.good) { console.log("juste") }
+      else { console.log("mauvais") }
     }
     if(this.compteRep == 5){
       this.setState({ score: this.state.score +1 })
       console.log("qcm bon")
     }
-    this.setState({ compteRep: 0 })
+    else { console.log("Vous vous êtes trompés") }
+    this.compteRep = 0
   }
-  button(){
+  button(qcmData){
     if(this.state.qcmRep){
       return(
         <View style={styles.button_container}>
@@ -55,7 +56,7 @@ class Qcm extends React.Component {
           <TouchableOpacity style={styles.touchableButtonGreen} onPress={() => this._loadQcm()}>
               <Text style={styles.button_text}>Suivant</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.touchableButtonBlue} onPress={() => this._displayQcmRep()}>
+          <TouchableOpacity style={styles.touchableButtonBlue} onPress={() => this._displayQcmRep(qcmData)}>
               <Text style={styles.button_text}>Afficher la réponse</Text>
           </TouchableOpacity>
         </View>
@@ -71,7 +72,7 @@ class Qcm extends React.Component {
       {RNchecked: false, label: qcm.pc, value: qcm.bc == "1" ? true : false },
       {RNchecked: false, label: qcm.pd, value: qcm.bd == "1" ? true : false },
       {RNchecked: false, label: qcm.pe, value: qcm.be == "1" ? true : false },
-    ]; 
+    ];
     if(this.state.qcmRep){
       qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
     } else {
@@ -80,7 +81,7 @@ class Qcm extends React.Component {
     return (
       <View style={styles.main_container}>
       {qcmVue}
-      {this.button()}
+      {this.button(qcmData)}
       </View>
     )
   }
@@ -119,7 +120,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "blue",
-  },
   },
 })
 

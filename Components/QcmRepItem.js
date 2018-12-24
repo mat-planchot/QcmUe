@@ -5,8 +5,7 @@ class QcmRepItem extends React.Component {
 
   constructor(props) {
     super(props)
-    this.compteRep = 0
-    this.state = { qcm: [], isLoading: false, qcmRep: false, good: false, score: 0, nbQcm: 0  }
+    this.state = { qcm: [], isLoading: false, qcmRep: false, score: 0, nbQcm: 0  }
   }
   _displayLoading() {
       if (this.state.isLoading) {
