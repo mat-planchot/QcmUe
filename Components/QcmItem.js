@@ -1,14 +1,11 @@
 import React from 'react'
 import { StyleSheet, View, Text, ActivityIndicator, ScrollView } from 'react-native'
 import CheckboxFormX from 'react-native-checkbox-form';
-import { getQCMue, getQCMueRep } from '../API/QCMue'
 
 class QcmItem extends React.Component {
   constructor(props) {
     super(props)
-    this.compteRep = 0
-    this.state = { qcm: [], isLoading: false, qcmRep: false, good: false, score: 0, nbQcm: 0  }
-    getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
+    this.state = { isLoading: false }
   }
   _onSelect = ( item ) => {
     console.log(item)
@@ -22,15 +19,6 @@ class QcmItem extends React.Component {
           </View>
         )
       }
-  }
-  _loadQcm(){
-  	this.setState({ isLoading: true, qcmRep: false })
-    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
-    console.log(this.state.qcmRep);
-  }
-  _displayQcmRep() {
-    this.setState({ qcmRep: true })
-    console.log(this.state.qcmRep);
   }
   render() {
       const qcm = this.props.qcm

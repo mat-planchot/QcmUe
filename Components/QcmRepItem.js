@@ -17,46 +17,39 @@ class QcmRepItem extends React.Component {
         )
       }
   }
+  vf(i){
+    const qcmData = this.props.qcmData // c'est un tableau d'objet
+    return(
+      <Text style={styles.VF_text}>
+        {qcmData[i].value ? "VRAI" : "FAUX"}
+      </Text>
+    )
+  }
+  proposition(i){
+    const qcm = this.props.qcm
+    return(
+      <View style={styles.proposition}>
+        <Text style={styles.proposition_text}>{qcm.propositions[i]}</Text>
+        {this.vf(i)}
+        <Text style={styles.corrige_text}>{qcm.corrections[i]}</Text>
+      </View>
+    )
+  }
   render() {
       const qcm = this.props.qcm
-      const ba = qcm.ba == "1" ? "VRAI" : qcm.ba == "0" ? "FAUX" : null
-      const bb = qcm.bb == "1" ? "VRAI" : qcm.bb == "0" ? "FAUX" : null
-      const bc = qcm.bc == "1" ? "VRAI" : qcm.bc == "0" ? "FAUX" : null
-      const bd = qcm.bd == "1" ? "VRAI" : qcm.bd == "0" ? "FAUX" : null
-      const be = qcm.be == "1" ? "VRAI" : qcm.be == "0" ? "FAUX" : null
       return (
           <ScrollView style={styles.main_container}>
             {this._displayLoading()}
             <View style={styles.intitule}>
-              <Text style={styles.intitule_text}>{qcm.intitule}</Text>
+              <Text style={styles.intitule_text}>{this.props.qcm.intitule}</Text>
             </View>
 
             <View style={styles.propositions}>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>A. {qcm.pa}</Text>
-                <Text style={styles.VF_text}>{ba}</Text>
-                <Text style={styles.corrige_text}>{qcm.ca}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>B. {qcm.pb}</Text>
-                <Text style={styles.VF_text}>{bb}</Text>
-                <Text style={styles.corrige_text}>{qcm.cb}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>C. {qcm.pc}</Text>
-                <Text style={styles.VF_text}>{bc}</Text>
-                <Text style={styles.corrige_text}>{qcm.cc}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>D. {qcm.pd}</Text>
-                <Text style={styles.VF_text}>{bd}</Text>
-                <Text style={styles.corrige_text}>{qcm.cd}</Text>
-              </View>
-              <View style={styles.proposition}>
-                <Text style={styles.proposition_text}>E. {qcm.pe}</Text>
-                <Text style={styles.VF_text}>{be}</Text>
-                <Text style={styles.corrige_text}>{qcm.ce}</Text>
-              </View>
+              {this.proposition(0)}
+              {this.proposition(1)}
+              {this.proposition(2)}
+              {this.proposition(3)}
+              {this.proposition(4)}
             </View>
 
           </ScrollView>
@@ -93,7 +86,6 @@ const styles = StyleSheet.create({
   },
   corrige_text:{
     fontSize: 20,
-    color: 'red',
   },
   VF_text: {
     textAlign: 'center',

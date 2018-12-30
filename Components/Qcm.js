@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'rea
 import CheckboxFormX from 'react-native-checkbox-form';
 import QcmItem from './QcmItem'
 import QcmRepItem from './QcmRepItem'
-import { getQCMue, getQCMueRep } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
+import { getQCMue } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
 
 class Qcm extends React.Component {
 
@@ -11,8 +11,10 @@ class Qcm extends React.Component {
     super(props)
     this.compteRep = 0
     this.good = false
-    this.state = { qcm: [], isLoading: false, qcmRep: false, good: false, score: 0, nbQcm: 0  }
-    getQCMue().then(data => this.setState({ qcm: data, isLoading: false }));
+    this.state = { qcm: {intitule: "null", propositions: ["A", "B", "C", "D", "E"], booleens: ["0", "0", "0", "0", "0"]},
+      isLoading: false, vraiFaux: [], score: 0, nbQcm: 0, message: null
+    }
+    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }) )
   }
 
   _loadQcm(){
@@ -29,16 +31,19 @@ class Qcm extends React.Component {
       this.good = false
       if(q.RNchecked == q.value){
         this.good = true
+        //this.setState({ vraiFaux: [...this.state.vraiFaux, this.good] })
         this.compteRep++
       }
       if(this.good) { console.log("juste") }
       else { console.log("mauvais") }
     }
     if(this.compteRep == 5){
-      this.setState({ score: this.state.score +1 })
+      this.setState({ score: this.state.score +1, message: "qcm bon" })
       console.log("qcm bon")
     }
-    else { console.log("Vous vous êtes trompés") }
+    else { console.log("Vous vous êtes trompés")
+      this.setState({ message: "Vous vous êtes trompés" })
+    }
     this.compteRep = 0
   }
   button(qcmData){
@@ -67,11 +72,11 @@ class Qcm extends React.Component {
     const qcm = this.state.qcm
     let qcmVue
     const qcmData = [
-      {RNchecked: false, label: qcm.pa, value: qcm.ba == "1" ? true : false },
-      {RNchecked: false, label: qcm.pb, value: qcm.bb == "1" ? true : false },
-      {RNchecked: false, label: qcm.pc, value: qcm.bc == "1" ? true : false },
-      {RNchecked: false, label: qcm.pd, value: qcm.bd == "1" ? true : false },
-      {RNchecked: false, label: qcm.pe, value: qcm.be == "1" ? true : false },
+      {RNchecked: false, label: qcm.propositions[0], value: qcm.booleens[0] == "1" ? true : false },
+      {RNchecked: false, label: qcm.propositions[1], value: qcm.booleens[1] == "1" ? true : false },
+      {RNchecked: false, label: qcm.propositions[2], value: qcm.booleens[2] == "1" ? true : false },
+      {RNchecked: false, label: qcm.propositions[3], value: qcm.booleens[3] == "1" ? true : false },
+      {RNchecked: false, label: qcm.propositions[4], value: qcm.booleens[4] == "1" ? true : false }
     ];
     if(this.state.qcmRep){
       qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
@@ -80,8 +85,11 @@ class Qcm extends React.Component {
     }
     return (
       <View style={styles.main_container}>
-      {qcmVue}
-      {this.button(qcmData)}
+        <View style={styles.score}>
+          <Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text>
+        </View>
+        {qcmVue}
+        {this.button(qcmData)}
       </View>
     )
   }
