@@ -12,7 +12,7 @@ class Qcm extends React.Component {
     this.compteRep = 0
     this.good = false
     this.state = { qcm: {intitule: "null", propositions: ["A", "B", "C", "D", "E"], booleens: ["0", "0", "0", "0", "0"]},
-      isLoading: false, vraiFaux: [], score: 0, nbQcm: 0, message: null
+      isLoading: false, TrueOrFalse: [], score: 0, nbQcm: 0, message: null
     }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }) )
   }
@@ -31,17 +31,16 @@ class Qcm extends React.Component {
       this.good = false
       if(q.RNchecked == q.value){
         this.good = true
-        //this.setState({ vraiFaux: [...this.state.vraiFaux, this.good] })
         this.compteRep++
       }
-      if(this.good) { console.log("juste") }
-      else { console.log("mauvais") }
+      if(this.good) { this.state.TrueOrFalse.push("1") }
+      else { this.state.TrueOrFalse.push("0") }
     }
     if(this.compteRep == 5){
       this.setState({ score: this.state.score +1, message: "qcm bon" })
       console.log("qcm bon")
     }
-    else { console.log("Vous vous êtes trompés")
+    else {
       this.setState({ message: "Vous vous êtes trompés" })
     }
     this.compteRep = 0
@@ -79,9 +78,9 @@ class Qcm extends React.Component {
       {RNchecked: false, label: qcm.propositions[4], value: qcm.booleens[4] == "1" ? true : false }
     ];
     if(this.state.qcmRep){
-      qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
+      qcmVue = <QcmRepItem qcm={this.state} qcmData={qcmData} />
     } else {
-      qcmVue = <QcmItem qcm={qcm} qcmData={qcmData} />
+      qcmVue = <QcmItem qcm={this.state} qcmData={qcmData} />
     }
     return (
       <View style={styles.main_container}>

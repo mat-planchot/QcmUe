@@ -27,13 +27,26 @@ class QcmRepItem extends React.Component {
   }
   proposition(i){
     const qcm = this.props.qcm
-    return(
-      <View style={styles.proposition}>
-        <Text style={styles.proposition_text}>{qcm.propositions[i]}</Text>
-        {this.vf(i)}
-        <Text style={styles.corrige_text}>{qcm.corrections[i]}</Text>
-      </View>
-    )
+    const qcmData = this.props.qcmData
+    console.log(qcmData[i].RNchecked);
+    if(qcmData[i].RNchecked == qcmData[i].value){
+      return(
+        <View style={styles.proposition_green}>
+          <Text style={styles.proposition_text}>{qcm.propositions[i]}</Text>
+          {this.vf(i)}
+          <Text style={styles.corrige_text}>{qcm.corrections[i]}</Text>
+        </View>
+      )
+    }
+    else {
+      return(
+        <View style={styles.proposition_red}>
+          <Text style={styles.proposition_text}>{qcm.propositions[i]}</Text>
+          {this.vf(i)}
+          <Text style={styles.corrige_text}>{qcm.corrections[i]}</Text>
+        </View>
+      )
+    }
   }
   render() {
       const qcm = this.props.qcm
@@ -78,8 +91,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
   },
-  proposition: {
+  proposition_red: {
     margin: 5,
+    backgroundColor: "#FEC8C8",
+  },
+  proposition_green: {
+    margin: 5,
+    backgroundColor: "#CAFAD0",
   },
   proposition_text: {
     fontSize: 20,
