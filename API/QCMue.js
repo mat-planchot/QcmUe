@@ -1,5 +1,5 @@
 export function getQCMue () {
-  const url = 'http://mat.planchot.free.fr/?a=ue'
+  const url = 'http://mat.planchot.free.fr/?a=qcm'
   return fetch(url)
     .then((response) => response.json())
     .catch((error) => console.error(error))

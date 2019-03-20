@@ -18,10 +18,10 @@ class QcmRepItem extends React.Component {
       }
   }
   vf(i){
-    const qcmData = this.props.qcmData // c'est un tableau d'objet
+    const qcmData = this.props.qcm
     return(
       <Text style={styles.VF_text}>
-        {qcmData[i].value ? "VRAI" : "FAUX"}
+        {qcm.propositions[i].booleen = "1" ? "VRAI" : "FAUX"}
       </Text>
     )
   }
@@ -29,27 +29,26 @@ class QcmRepItem extends React.Component {
     const qcm = this.props.qcm
     const qcmData = this.props.qcmData
     console.log(qcmData[i].RNchecked);
-    if(qcmData[i].RNchecked == qcmData[i].value){
+    if(qcmData[i].RNchecked == qcm.propositions[i].booleen == "1" ? true : false){
       return(
         <View style={styles.proposition_green}>
-          <Text style={styles.proposition_text}>{qcm.propositions[i]}</Text>
+          <Text style={styles.proposition_text}>{qcm.propositions[i].libelle}</Text>
           {this.vf(i)}
-          <Text style={styles.corrige_text}>{qcm.corrections[i]}</Text>
+          <Text style={styles.corrige_text}>{qcm.corrections[i].libelle}</Text>
         </View>
       )
     }
     else {
       return(
         <View style={styles.proposition_red}>
-          <Text style={styles.proposition_text}>{qcm.propositions[i]}</Text>
+          <Text style={styles.proposition_text}>{qcm.propositions[i].libelle}</Text>
           {this.vf(i)}
-          <Text style={styles.corrige_text}>{qcm.corrections[i]}</Text>
+          <Text style={styles.corrige_text}>{qcm.corrections[i].libelle}</Text>
         </View>
       )
     }
   }
   render() {
-      const qcm = this.props.qcm
       return (
           <ScrollView style={styles.main_container}>
             {this._displayLoading()}

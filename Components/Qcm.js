@@ -11,10 +11,22 @@ class Qcm extends React.Component {
     super(props)
     this.compteRep = 0
     this.good = false
-    this.state = { qcm: {intitule: "null", propositions: ["A", "B", "C", "D", "E"], booleens: ["0", "0", "0", "0", "0"]},
+    this.state = { qcm: {intitule: "null", propositions: [{libelle: "A", correction: "", booleen:"0"}] },
       isLoading: false, TrueOrFalse: [], score: 0, nbQcm: 0, message: null
     }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }) )
+    for (var q in data) {
+      if (object.hasOwnProperty(q)) {
+
+      }
+    }
+    this.state = {...this.state, qcmData: [
+      {RNchecked: false, label: this.state.qcm.propositions[0], value: this.state.qcm.booleens[0] == "1" ? true : false },
+      {RNchecked: false, label: this.state.qcm.propositions[1], value: this.state.qcm.booleens[1] == "1" ? true : false },
+      {RNchecked: false, label: this.state.qcm.propositions[2], value: this.state.qcm.booleens[2] == "1" ? true : false },
+      {RNchecked: false, label: this.state.qcm.propositions[3], value: this.state.qcm.booleens[3] == "1" ? true : false },
+      {RNchecked: false, label: this.state.qcm.propositions[4], value: this.state.qcm.booleens[4] == "1" ? true : false }]
+    }
   }
 
   _loadQcm(){
@@ -70,17 +82,11 @@ class Qcm extends React.Component {
   render() {
     const qcm = this.state.qcm
     let qcmVue
-    const qcmData = [
-      {RNchecked: false, label: qcm.propositions[0], value: qcm.booleens[0] == "1" ? true : false },
-      {RNchecked: false, label: qcm.propositions[1], value: qcm.booleens[1] == "1" ? true : false },
-      {RNchecked: false, label: qcm.propositions[2], value: qcm.booleens[2] == "1" ? true : false },
-      {RNchecked: false, label: qcm.propositions[3], value: qcm.booleens[3] == "1" ? true : false },
-      {RNchecked: false, label: qcm.propositions[4], value: qcm.booleens[4] == "1" ? true : false }
-    ];
+    const qcmData = this.state.qcmData
     if(this.state.qcmRep){
-      qcmVue = <QcmRepItem qcm={this.state} qcmData={qcmData} />
+      qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
     } else {
-      qcmVue = <QcmItem qcm={this.state} qcmData={qcmData} />
+      qcmVue = <QcmItem qcm={qcm} qcmData={qcmData} />
     }
     return (
       <View style={styles.main_container}>
