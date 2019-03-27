@@ -5,11 +5,10 @@ import CheckboxFormX from 'react-native-checkbox-form';
 class QcmItem extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { isLoading: false, qcmData: [] }
+    this.state = { isLoading: false, qcm:{ propositions: []} }
   }
   _onSelect = ( item ) => {
     console.log(item)
-    this.setState({ qcmData: item })
   };
   _displayLoading() {
       if (this.state.isLoading) {
@@ -33,7 +32,7 @@ class QcmItem extends React.Component {
           <View style={styles.propositions}>
             <CheckboxFormX
                   textStyle={{ fontSize: 20, marginRight: 30 }}
-                  dataSource={qcm.propositions}
+                  dataSource={qcmData}
                   itemShowKey="libelle"
                   itemCheckedKey="RNchecked"
                   onChecked={(item) => this._onSelect(item)}

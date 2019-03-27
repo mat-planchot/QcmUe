@@ -5,7 +5,7 @@ class QcmRepItem extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { qcm: [], isLoading: false, qcmRep: false, score: 0, nbQcm: 0  }
+    this.state = { isLoading: false  }
   }
   _displayLoading() {
       if (this.state.isLoading) {
@@ -18,34 +18,30 @@ class QcmRepItem extends React.Component {
       }
   }
   vf(i){
-    const qcmData = this.props.qcm
+    const qcm = this.props.qcm
     return(
-      <Text style={styles.VF_text}>
-        {qcm.propositions[i].booleen = "1" ? "VRAI" : "FAUX"}
-      </Text>
+      <View>
+        <Text style={styles.proposition_text}>
+          {qcm.propositions[i].libelle}
+        </Text>
+        <Text style={styles.VF_text}>
+          {qcm.propositions[i].booleen == "1" ? "VRAI" : "FAUX"}
+        </Text>
+        <Text style={styles.corrige_text}>
+          {qcm.propositions[i].correction}
+        </Text>
+      </View>
     )
   }
   proposition(i){
     const qcm = this.props.qcm
-    const qcmData = this.props.qcmData
-    console.log(qcmData[i].RNchecked);
-    if(qcmData[i].RNchecked == qcm.propositions[i].booleen == "1" ? true : false){
-      return(
-        <View style={styles.proposition_green}>
-          <Text style={styles.proposition_text}>{qcm.propositions[i].libelle}</Text>
-          {this.vf(i)}
-          <Text style={styles.corrige_text}>{qcm.corrections[i].libelle}</Text>
-        </View>
-      )
+    if(qcm.propositions[i].RNchecked == undefined){
+      qcm.propositions[i].RNchecked = false
     }
-    else {
-      return(
-        <View style={styles.proposition_red}>
-          <Text style={styles.proposition_text}>{qcm.propositions[i].libelle}</Text>
-          {this.vf(i)}
-          <Text style={styles.corrige_text}>{qcm.corrections[i].libelle}</Text>
-        </View>
-      )
+    if(qcm.propositions[i].RNchecked == qcm.propositions[i].booleen == "1" ? true : false){
+      return <View style={styles.proposition_green}>{this.vf(i)}</View>
+    } else {
+      return <View style={styles.proposition_red}>{this.vf(i)}</View>
     }
   }
   render() {

@@ -12,21 +12,9 @@ class Qcm extends React.Component {
     this.compteRep = 0
     this.good = false
     this.state = { qcm: {intitule: "null", propositions: [{libelle: "A", correction: "", booleen:"0"}] },
-      isLoading: false, TrueOrFalse: [], score: 0, nbQcm: 0, message: null
+      isLoading: false, score: 0, nbQcm: 0, message: null
     }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }) )
-    for (var q in data) {
-      if (object.hasOwnProperty(q)) {
-
-      }
-    }
-    this.state = {...this.state, qcmData: [
-      {RNchecked: false, label: this.state.qcm.propositions[0], value: this.state.qcm.booleens[0] == "1" ? true : false },
-      {RNchecked: false, label: this.state.qcm.propositions[1], value: this.state.qcm.booleens[1] == "1" ? true : false },
-      {RNchecked: false, label: this.state.qcm.propositions[2], value: this.state.qcm.booleens[2] == "1" ? true : false },
-      {RNchecked: false, label: this.state.qcm.propositions[3], value: this.state.qcm.booleens[3] == "1" ? true : false },
-      {RNchecked: false, label: this.state.qcm.propositions[4], value: this.state.qcm.booleens[4] == "1" ? true : false }]
-    }
   }
 
   _loadQcm(){
@@ -40,13 +28,14 @@ class Qcm extends React.Component {
   _Reponses(qcmData){
     this.setState({ nbQcm: this.state.nbQcm +1 })
     for (let q of qcmData) {
+      if(q.RNchecked == undefined){
+        q.RNchecked = false
+      }
       this.good = false
-      if(q.RNchecked == q.value){
+      if(q.RNchecked == q.booleen == "1" ? true : false){
         this.good = true
         this.compteRep++
       }
-      if(this.good) { this.state.TrueOrFalse.push("1") }
-      else { this.state.TrueOrFalse.push("0") }
     }
     if(this.compteRep == 5){
       this.setState({ score: this.state.score +1, message: "qcm bon" })
@@ -81,8 +70,8 @@ class Qcm extends React.Component {
   }
   render() {
     const qcm = this.state.qcm
+    const qcmData = this.state.qcm.propositions
     let qcmVue
-    const qcmData = this.state.qcmData
     if(this.state.qcmRep){
       qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
     } else {
