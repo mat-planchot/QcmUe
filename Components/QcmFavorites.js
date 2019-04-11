@@ -1,17 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, Button, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
-import QcmRepItem from './QcmRepItem'
-import { getQCMue, getQCMueRep } from '../API/QCMue'
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
+import { getQCMue } from '../API/QCMue'
 
-class QcmRep extends React.Component {
+class QcmFavorites extends React.Component {
 
   constructor(props) {
     super(props)
   }
-  _loadQcm(){
-  	this.setState({ isLoading: true, qcmRep: false })
-    getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }));
-  }
+
   _displayLoading() {
       if (this.state.isLoading) {
         // Si isLoading vaut true, on affiche le chargement à l'écran
@@ -26,8 +22,7 @@ class QcmRep extends React.Component {
   render() {
       return (
         <View style={styles.main_container}>
-	        {this._displayLoading()}
-        	<QcmRepItem qcm={this.props.qcm} qcmData={this.props.qcmData}/>
+        	<Text style={styles.title_text}>Qcm marqués</Text>
         </View>
       )
   }
@@ -35,6 +30,9 @@ class QcmRep extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
+  },
+  title_text: {
+    textAlign:'center',
   },
   loading_container: {
     position: 'absolute',
@@ -45,14 +43,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  button_container: {
-    flexDirection: 'row',
-  },
-  button_text: {
-    color: "white",
-    fontSize: 22,
-    textAlign: "center",
-  },
   touchableButtonGreen:{
     height: 70,
     flex: 1,
@@ -62,4 +52,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default QcmRep
+export default QcmFavorites

@@ -1,6 +1,6 @@
-import { createStackNavigator } from 'react-navigation'
+import { createAppContainer, createStackNavigator, createDrawerNavigator } from 'react-navigation'
 import Qcm from '../Components/Qcm'
-import QcmRep from '../Components/QcmRep'
+import QcmFavorites from '../Components/QcmFavorites'
 
 const QcmStackNavigator = createStackNavigator({
   Qcm: {
@@ -9,12 +9,18 @@ const QcmStackNavigator = createStackNavigator({
       title: 'Qcm'
     }
   },
-  QcmRep: {
-    screen: QcmRep,
-    navigationOptions: {
-      title: 'Réponse'
-    }
+  QcmFavorites: {
+    screen: QcmFavorites
   },
 })
 
-export default QcmStackNavigator
+const QcmDrawerNavigator = createDrawerNavigator({
+  Qcm: {
+    screen: Qcm
+  },
+  QcmFavorites: {
+    screen: QcmFavorites
+  },
+})
+
+export default createAppContainer(QcmDrawerNavigator)
