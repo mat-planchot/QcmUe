@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base'
 import CheckboxFormX from 'react-native-checkbox-form';
 import QcmItem from './QcmItem'
 import QcmRepItem from './QcmRepItem'
@@ -78,13 +79,17 @@ class Qcm extends React.Component {
       qcmVue = <QcmItem qcm={qcm} qcmData={qcmData} />
     }
     return (
-      <View style={styles.main_container}>
-        <View style={styles.score}>
-          <Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text>
-        </View>
+      <Container>
+        <Header style={{backgroundColor: "#fff"}}>
+          <Body><Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text></Body>
+          <Right>
+            <Icon name='menu' style={{color:"black"}}
+              onPress={()=>this.props.navigation.openDrawer()}/>
+          </Right>
+        </Header>
         {qcmVue}
         {this.button(qcmData)}
-      </View>
+      </Container>
     )
   }
 }

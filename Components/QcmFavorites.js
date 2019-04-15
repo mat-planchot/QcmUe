@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 import { getQCMue } from '../API/QCMue'
+import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base'
 
 class QcmFavorites extends React.Component {
 
@@ -21,9 +22,15 @@ class QcmFavorites extends React.Component {
 
   render() {
       return (
-        <View style={styles.main_container}>
+        <Container>
+          <Header style={{backgroundColor: "#fff"}}>
+            <Right>
+              <Icon name='menu' style={{color:"black"}}
+                onPress={()=>this.props.navigation.openDrawer()}/>
+            </Right>
+          </Header>
         	<Text style={styles.title_text}>Qcm marqués</Text>
-        </View>
+        </Container>
       )
   }
 }
