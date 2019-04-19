@@ -5,6 +5,7 @@ import CheckboxFormX from 'react-native-checkbox-form';
 import QcmItem from './QcmItem'
 import QcmRepItem from './QcmRepItem'
 import { getQCMue } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
+import { connect } from 'react-redux'
 
 class Qcm extends React.Component {
 
@@ -25,6 +26,10 @@ class Qcm extends React.Component {
   _displayQcmRep(qcmData) {
     this.setState({ qcmRep: true })
     this._Reponses(qcmData)
+  }
+  _toggleFavorite() {
+    const action = { type: "TOGGLE_FAVORITE", value: this.state.qcm }
+    this.props.dispatch(action)
   }
   _Reponses(qcmData){
     this.setState({ nbQcm: this.state.nbQcm +1 })
@@ -83,6 +88,8 @@ class Qcm extends React.Component {
         <Header style={{backgroundColor: "#fff"}}>
           <Body><Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text></Body>
           <Right>
+            <Icon name='md-star-outline' style={{color:"black"}}
+              onPress={() => this._toggleFavorite()}/>
             <Icon name='menu' style={{color:"black"}}
               onPress={()=>this.props.navigation.openDrawer()}/>
           </Right>
@@ -129,5 +136,16 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
   },
 })
+const mapStateToProps = (state) => {
+  return {state: {
+    favoritesQcm: state.favoritesQcm
+  }}
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    favoritesQcm : dispatch(testAction.favoritesQcm)
+  }
+}
 
+//export default connect(mapStateToProps)(Qcm)
 export default Qcm
