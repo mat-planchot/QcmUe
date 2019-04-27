@@ -1,7 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator, SafeAreaView } from 'react-native'
 import { getQCMue } from '../API/QCMue'
 import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base'
+import SafeViewAndroid from "./SafeViewAndroid"
 
 class QcmFavorites extends React.Component {
 
@@ -22,15 +23,17 @@ class QcmFavorites extends React.Component {
 
   render() {
       return (
-        <Container>
-          <Header style={{backgroundColor: "#fff"}}>
-            <Right>
-              <Icon name='menu' style={{color:"black"}}
-                onPress={()=>this.props.navigation.openDrawer()}/>
-            </Right>
-          </Header>
-        	<Text style={styles.title_text}>Qcm marqués</Text>
-        </Container>
+        <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, { backgroundColor: '#FFF' }]}>
+          <Container>
+            <Header style={{backgroundColor: "#fff"}}>
+              <Right>
+                <Icon name='menu' style={{color:"black"}}
+                  onPress={()=>this.props.navigation.openDrawer()}/>
+              </Right>
+            </Header>
+          	<Text style={styles.title_text}>Qcm marqués</Text>
+          </Container>
+        </SafeAreaView>
       )
   }
 }

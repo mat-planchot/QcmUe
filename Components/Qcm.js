@@ -1,7 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native'
 import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base'
 import CheckboxFormX from 'react-native-checkbox-form';
+import SafeViewAndroid from "./SafeViewAndroid"
 import QcmItem from './QcmItem'
 import QcmRepItem from './QcmRepItem'
 import { getQCMue } from '../API/QCMue' // import { } from ... car c'est un export nommé dans QCMue.js
@@ -68,7 +69,7 @@ class Qcm extends React.Component {
               <Text style={styles.button_text}>Suivant</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchableButtonBlue} onPress={() => this._displayQcmRep(qcmData)}>
-              <Text style={styles.button_text}>Afficher la réponse</Text>
+              <Text style={styles.button_text}>Réponse</Text>
           </TouchableOpacity>
         </View>
       )
@@ -84,19 +85,21 @@ class Qcm extends React.Component {
       qcmVue = <QcmItem qcm={qcm} qcmData={qcmData} />
     }
     return (
-      <Container>
-        <Header style={{backgroundColor: "#fff"}}>
-          <Body><Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text></Body>
-          <Right>
-            <Icon name='md-star-outline' style={{color:"black"}}
-              onPress={() => this._toggleFavorite()}/>
-            <Icon name='menu' style={{color:"black"}}
-              onPress={()=>this.props.navigation.openDrawer()}/>
-          </Right>
-        </Header>
-        {qcmVue}
-        {this.button(qcmData)}
-      </Container>
+      <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, { backgroundColor: '#FFF' }]}>
+        <Container>
+          <Header style={{backgroundColor: "#fff"}}>
+            <Body><Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text></Body>
+            <Right>
+              <Icon name='md-star-outline' style={{color:"black"}}
+                onPress={() => this._toggleFavorite()}/>
+              <Icon name='menu' style={{color:"black"}}
+                onPress={()=>this.props.navigation.openDrawer()}/>
+            </Right>
+          </Header>
+          {qcmVue}
+          {this.button(qcmData)}
+        </Container>
+      </SafeAreaView>
     )
   }
 }
@@ -122,14 +125,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   touchableButtonGreen:{
-    height: 70,
+    height: 40,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "green",
   },
   touchableButtonBlue:{
-    height: 70,
+    height: 40,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
