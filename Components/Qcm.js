@@ -15,7 +15,7 @@ class Qcm extends React.Component {
     this.compteRep = 0
     this.good = false
     this.state = { qcm: {intitule: "null", propositions: [{libelle: "A", correction: "", booleen:"0"}] },
-      isLoading: false, score: 0, nbQcm: 0, message: null
+      isLoading: false, score: 0, nbQcm: 0, message: null, favoritesQcm: [], favoritesIcon: false
     }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }) )
   }
@@ -31,7 +31,17 @@ class Qcm extends React.Component {
   _toggleFavorite() {
     const action = { type: "TOGGLE_FAVORITE", value: this.state.qcm }
     this.props.dispatch(action)
+    this.state.favoritesIcon ? this.setState({favoritesIcon: false}) : this.setState({favoritesIcon: true})
   }
+  _displayFavoriteIcon() {
+      var sourceIcon = 'md-star-outline'
+      if (this.props.favoritesQcm.findIndex(item => item.idUe === this.state.qcm.idUe) !== -1) {
+        sourceIcon = 'md-star'
+      }
+      return sourceIcon
+
+  }
+
   _Reponses(qcmData){
     this.setState({ nbQcm: this.state.nbQcm +1 })
     for (let q of qcmData) {
@@ -88,12 +98,17 @@ class Qcm extends React.Component {
       <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, { backgroundColor: '#FFF' }]}>
         <Container>
           <Header style={{backgroundColor: "#fff"}}>
-            <Body><Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text></Body>
-            <Right>
-              <Icon name='md-star-outline' style={{color:"black"}}
-                onPress={() => this._toggleFavorite()}/>
+            <Left>
               <Icon name='menu' style={{color:"black"}}
                 onPress={()=>this.props.navigation.openDrawer()}/>
+            </Left>
+            <Body>
+              <Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text>
+            </Body>
+            <Right>
+              <Icon name={this.state.favoritesIcon ? 'md-star' : 'md-star-outline'}
+                style={{color:"black"}}
+                onPress={() => this._toggleFavorite()}/>
             </Right>
           </Header>
           {qcmVue}
@@ -150,5 +165,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-//export default connect(mapStateToProps)(Qcm)
-export default Qcm
+export default connect(mapStateToProps)(Qcm)
+//export default Qcm

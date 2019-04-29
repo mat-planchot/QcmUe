@@ -4,7 +4,7 @@ function toggleFavorite(state = initialState, action) {
   let nextState
   switch (action.type) {
     case 'TOGGLE_FAVORITE':
-      const favoriteQcmIndex = state.favoritesQcm.findIndex(item => item.id === action.value.id)
+      const favoriteQcmIndex = state.favoritesQcm.findIndex(item => item.idUe === action.value.idUe)
       if (favoriteQcmIndex !== -1) {
         // suppression de la liste
         nextState = {
