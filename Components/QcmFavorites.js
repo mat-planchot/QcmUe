@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator, SafeAreaView } from 'react-native'
-import { getQCMue } from '../API/QCMue'
+import { StyleSheet, View, Text, ActivityIndicator, SafeAreaView, FlatList } from 'react-native'
 import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base'
 import SafeViewAndroid from "./SafeViewAndroid"
+import QcmRepItem from './QcmRepItem'
+import { connect } from 'react-redux'
 
 class QcmFavorites extends React.Component {
 
@@ -22,23 +23,34 @@ class QcmFavorites extends React.Component {
     }
 
   render() {
+    console.log(this.props)
       return (
         <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, { backgroundColor: '#FFF' }]}>
           <Container>
             <Header style={{backgroundColor: "#fff"}}>
-              <Right>
+              <Left>
                 <Icon name='menu' style={{color:"black"}}
                   onPress={()=>this.props.navigation.openDrawer()}/>
-              </Right>
+              </Left>
+              <Body>
+                <Text>Qcm marqués</Text>
+              </Body>
             </Header>
-          	<Text style={styles.title_text}>Qcm marqués</Text>
+            <FlatList
+              style={styles.list}
+              data={this.props.favoritesQcm}
+              keyExtractor={(item) => item.idUe.toString()}
+              renderItem={({item}) => (
+                <QcmRepItem qcm={item} />
+              )}
+            />
           </Container>
         </SafeAreaView>
       )
   }
 }
 const styles = StyleSheet.create({
-  main_container: {
+  list: {
     flex: 1,
   },
   title_text: {
@@ -61,5 +73,10 @@ const styles = StyleSheet.create({
     backgroundColor: "green",
   },
 })
-
-export default QcmFavorites
+const mapStateToProps = (state) => {
+  return {
+    favoritesQcm: state.favoritesQcm
+  }
+}
+export default connect(mapStateToProps)(QcmFavorites)
+//export default QcmFavorites

@@ -15,7 +15,7 @@ class Qcm extends React.Component {
     this.compteRep = 0
     this.good = false
     this.state = { qcm: {intitule: "null", propositions: [{libelle: "A", correction: "", booleen:"0"}] },
-      isLoading: false, score: 0, nbQcm: 0, message: null, favoritesQcm: [], favoritesIcon: false
+      isLoading: false, score: 0, nbQcm: 0, message: null, favoritesQcm: [], isQcmFavorite: false
     }
     getQCMue().then(data => this.setState({ qcm: data, isLoading: false, }) )
   }
@@ -31,15 +31,7 @@ class Qcm extends React.Component {
   _toggleFavorite() {
     const action = { type: "TOGGLE_FAVORITE", value: this.state.qcm }
     this.props.dispatch(action)
-    this.state.favoritesIcon ? this.setState({favoritesIcon: false}) : this.setState({favoritesIcon: true})
-  }
-  _displayFavoriteIcon() {
-      var sourceIcon = 'md-star-outline'
-      if (this.props.favoritesQcm.findIndex(item => item.idUe === this.state.qcm.idUe) !== -1) {
-        sourceIcon = 'md-star'
-      }
-      return sourceIcon
-
+    this.state.isQcmFavorite ? this.setState({isQcmFavorite: false}) : this.setState({isQcmFavorite: true})
   }
 
   _Reponses(qcmData){
@@ -56,7 +48,6 @@ class Qcm extends React.Component {
     }
     if(this.compteRep == 5){
       this.setState({ score: this.state.score +1, message: "qcm bon" })
-      console.log("qcm bon")
     }
     else {
       this.setState({ message: "Vous vous êtes trompés" })
@@ -90,9 +81,9 @@ class Qcm extends React.Component {
     const qcmData = this.state.qcm.propositions
     let qcmVue
     if(this.state.qcmRep){
-      qcmVue = <QcmRepItem qcm={qcm} qcmData={qcmData} />
+      qcmVue = <QcmRepItem qcm={qcm} />
     } else {
-      qcmVue = <QcmItem qcm={qcm} qcmData={qcmData} />
+      qcmVue = <QcmItem qcm={qcm} />
     }
     return (
       <SafeAreaView style={[SafeViewAndroid.AndroidSafeArea, { backgroundColor: '#FFF' }]}>
@@ -106,7 +97,7 @@ class Qcm extends React.Component {
               <Text>{this.state.score} / {this.state.nbQcm} {this.state.message}</Text>
             </Body>
             <Right>
-              <Icon name={this.state.favoritesIcon ? 'md-star' : 'md-star-outline'}
+              <Icon name={this.state.isQcmFavorite ? 'md-star' : 'md-star-outline'}
                 style={{color:"black"}}
                 onPress={() => this._toggleFavorite()}/>
             </Right>
@@ -154,10 +145,10 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
   },
 })
-const mapStateToProps = (state) => {
-  return {state: {
+const mapStateToProps = state => {
+  return {
     favoritesQcm: state.favoritesQcm
-  }}
+  }
 }
 const mapDispatchToProps = (dispatch) => {
   return {

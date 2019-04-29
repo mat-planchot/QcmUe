@@ -22,7 +22,7 @@ class QcmItem extends React.Component {
   }
   render() {
       const qcm = this.props.qcm
-      const qcmData = this.props.qcmData
+      const qcmData = qcm.propositions
       return (
         <ScrollView style={styles.scroll_container}>
         {this._displayLoading()}
