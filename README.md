@@ -10,3 +10,4 @@ Les qcm ne peuvent être consulté que si l'on dispose du token.
 Pour améliorer l'affichage des label des checkbox, modifiez node_modules/react-native-checkbox-form/index.js
 Enlevez justifyContent: 'center', alignItems: 'center' ligne 82.
 
+![Alt Text](https://thumbs.gfycat.com/DiligentAdmiredIchthyosaurs-size_restricted.gif)
